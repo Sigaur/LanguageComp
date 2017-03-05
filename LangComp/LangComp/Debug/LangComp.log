@@ -1,3 +1,8 @@
-﻿  Analyseur.cpp
-  LangComp.vcxproj -> C:\Users\Seven_8\Work\LangComp\LangComp\Debug\LangComp.exe
-  LangComp.vcxproj -> C:\Users\Seven_8\Work\LangComp\LangComp\Debug\LangComp.pdb (Partial PDB)
+﻿  SDD.cpp
+c:\users\marcgayraud\work\languagecomp\langcomp\langcomp\sdd.cpp(55): warning C4018: '<': signed/unsigned mismatch
+c:\users\marcgayraud\work\languagecomp\langcomp\langcomp\sdd.cpp(57): warning C4018: '<': signed/unsigned mismatch
+c:\users\marcgayraud\work\languagecomp\langcomp\langcomp\sdd.cpp(79): warning C4018: '<': signed/unsigned mismatch
+c:\users\marcgayraud\work\languagecomp\langcomp\langcomp\sdd.cpp(86): warning C4018: '<': signed/unsigned mismatch
+c:\users\marcgayraud\work\languagecomp\langcomp\langcomp\sdd.cpp(88): warning C4018: '<': signed/unsigned mismatch
+  LangComp.vcxproj -> C:\Users\MarcGAYRAUD\Work\LanguageComp\LangComp\Debug\LangComp.exe
+  LangComp.vcxproj -> C:\Users\MarcGAYRAUD\Work\LanguageComp\LangComp\Debug\LangComp.pdb (Partial PDB)

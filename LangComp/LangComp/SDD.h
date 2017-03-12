@@ -12,11 +12,11 @@ public:
 	void suppresionRecu();
 
 private:
-	std::vector< std::vector< std::string > > m_tabInit;/*Tableaun initial sous la forme:
+	std::vector< std::vector< std::string > > m_tabInit;/*Tableau initial sous la forme:
 														Etat Initial | Regle | Regle ...
 														Etat Initial | Regle | Regle | Regle ...
 														...
 														*/
-	
+
 };
 

@@ -6,8 +6,9 @@ class SDD
 public:
 	SDD();
 	~SDD();
-	void lecture(std::string fichier);
+	void lecture(std::string nomFichier);
 	void affichage();
+	void affichageTerminauxEtNon();
 	void suppresionRecu();
 
 private:

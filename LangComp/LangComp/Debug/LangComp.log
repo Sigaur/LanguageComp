@@ -1,3 +1,12 @@
-﻿  Analyseur.cpp
+﻿  main.cpp
+  SDD.cpp
+c:\users\seven_8\work\langcomp\langcomp\langcomp\sdd.cpp(55): warning C4018: '<': signed/unsigned mismatch
+c:\users\seven_8\work\langcomp\langcomp\langcomp\sdd.cpp(57): warning C4018: '<': signed/unsigned mismatch
+c:\users\seven_8\work\langcomp\langcomp\langcomp\sdd.cpp(79): warning C4018: '<': signed/unsigned mismatch
+c:\users\seven_8\work\langcomp\langcomp\langcomp\sdd.cpp(86): warning C4018: '<': signed/unsigned mismatch
+c:\users\seven_8\work\langcomp\langcomp\langcomp\sdd.cpp(88): warning C4018: '<': signed/unsigned mismatch
+  Analyseur.cpp
+  Generating Code...
+  LINK : C:\Users\Seven_8\Work\LangComp\LangComp\Debug\LangComp.exe not found or not built by the last incremental link; performing full link
   LangComp.vcxproj -> C:\Users\Seven_8\Work\LangComp\LangComp\Debug\LangComp.exe
   LangComp.vcxproj -> C:\Users\Seven_8\Work\LangComp\LangComp\Debug\LangComp.pdb (Partial PDB)

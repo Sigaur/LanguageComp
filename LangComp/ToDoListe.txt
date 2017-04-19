@@ -1,0 +1,10 @@
+Done 	-Lecture Fichier
+Done 	-Repartition Terminaux et non Terminaux
+Done	-Creation Systeme de Donnees
+Done 	-Affichage Grammaire
+Nicolas	-Identification recursivite
+Nicolas	-Elimination recursivite
+	-Calcul Premiers et Suivants
+	-Table d'Analyse Predictive
+Marc	-Analyse Chaine entree Clavier
+	

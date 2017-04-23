@@ -72,6 +72,21 @@ void SDD::affichage()
 	}
 }
 
+void SDD::affichageFirsts()
+{
+	std::cout << endl << endl << "Premiers : " << endl;
+	for (size_t i = 0; i < m_premiers.size(); i++)
+	{
+		std::cout << m_premiers[i].initial << "  ";
+		for (size_t j = 0; j < m_premiers[i].premiers.size(); j++)
+		{
+			std::cout << m_premiers[i].premiers[j];
+		}
+		cout << endl;
+	}
+	
+}
+
 void SDD::trouverTerminauxEtNon()
 {
 	for (size_t i = 0; i < m_tabInit.size(); i++)

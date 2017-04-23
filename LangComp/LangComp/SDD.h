@@ -8,6 +8,7 @@ public:
 	~SDD();
 	void lecture(std::string nomFichier);
 	void affichage();
+	void affichageFirsts();
 	void trouverTerminauxEtNon();
 	void suppresionRecu();
 
@@ -18,6 +19,7 @@ public:
 														*/
     std::vector< std::string > m_terminaux;
     std::vector< std::string > m_nonTerminaux;
-
+	std::vector< Premier > m_premiers;
+	std::vector< Premier > m_suivants;
 };
 

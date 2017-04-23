@@ -1,8 +1,14 @@
 #include "Analyseur.h"
-
+using namespace std;
 
 Analyseur::Analyseur()
 {
+}
+
+
+Analyseur::Analyseur(SDD sdd)
+{
+	this->m_SDD = sdd;
 }
 
 
@@ -38,6 +44,116 @@ Rules for Follow Sets
 */
 
 
+Premier Analyseur::firsts(std::string start)
+{
+	Premier temp;
+	temp.initial = start;
+
+	firstRule1(temp);
+	firstRule2(temp);
+	firstRule3(temp);
+
+	
+	return temp;
+}
+
+void Analyseur::firstRule1(Premier & tempPremier)
+{
+	bool trouve = false;
+	for (size_t i = 0; i < this->m_SDD.m_tabInit.size(); i++)
+	{
+		if (this->m_SDD.m_tabInit[i][0] == tempPremier.initial)
+		{
+			trouve = true;
+		}
+	}
+	if (!trouve)
+	{
+		if (!isIn(tempPremier.premiers, tempPremier.initial))
+			tempPremier.premiers.push_back(tempPremier.initial);
+	}
+}
+
+void Analyseur::firstRule2(Premier & tempPremier)
+{
+	for (size_t i = 0; i < this->m_SDD.m_tabInit.size(); i++)
+	{
+		if (this->m_SDD.m_tabInit[i][0] == tempPremier.initial)
+		{
+			for (size_t j = 1; j < this->m_SDD.m_tabInit[i].size(); j++)
+			{
+				if (this->m_SDD.m_tabInit[i][j] == EPSILON)
+				{
+					if (!isIn(tempPremier.premiers, EPSILON))
+						tempPremier.premiers.push_back(EPSILON);
+				}
+			}
+		}
+	}
+}
+
+void Analyseur::firstRule3(Premier & tempPremier)
+{
+	string tempString;
+	Premier recursivePremier;
+
+	bool keepGoing;
+	for (size_t i = 0; i < this->m_SDD.m_tabInit.size(); i++)
+	{
+		if (this->m_SDD.m_tabInit[i][0] == tempPremier.initial)
+		{
+			
+			for (size_t j = 1; j < this->m_SDD.m_tabInit[i].size(); j++)//recupere une regle
+			{
+				//////////////////////////////
+				tempString = this->m_SDD.m_tabInit[i][j];//regle
+				keepGoing = true;
+
+				for (size_t s = 0; s < tempString.size(); s++)//recupere un charactere de cette regle
+				{
+					
+					if (keepGoing)
+					{
+						recursivePremier = firsts(string (1, tempString[s]));
+						keepGoing = false;
+						for (size_t t = 0; t < recursivePremier.premiers.size(); t++)//verifie si les premiers du caractere selectionner (premier) contient lepsilon
+						{
+							if (recursivePremier.premiers[t] == EPSILON)
+							{
+								keepGoing = true;
+							}
+						}
+					}
+
+					if (!keepGoing)
+					{
+						for (size_t t = 0; t < recursivePremier.premiers.size(); t++)
+						{
+							if (!isIn(tempPremier.premiers, recursivePremier.premiers[t]))
+								tempPremier.premiers.push_back(recursivePremier.premiers[t]);
+						}
+					}
+					else
+					{
+						for (size_t t = 0; t < recursivePremier.premiers.size(); t++)
+						{
+							if (!(recursivePremier.premiers[t] == EPSILON))
+							{
+								if (!isIn(tempPremier.premiers, recursivePremier.premiers[t]))
+									tempPremier.premiers.push_back(recursivePremier.premiers[t]);/////////Combinaison rule 3.4
+							}
+								
+						}
+					}
+				}
+				////////////////////////////////
+			}
+		}
+	}
+}
+
+
+/*
 void Analyseur::premiersSuivants()//Calculs des Premiers Suivants et sauvegarde de ces derniers dans les tableaux m_Premiers et m_Suivants
 {
     for(size_t i = 1; i < m_tabInit.size(); i++)
@@ -46,15 +162,7 @@ void Analyseur::premiersSuivants()//Calculs des Premiers Suivants et sauvegarde 
         std::string tmp = "";
         tmp += m_tabInit[i][0];
         size_t k = 0;
-        do {
-            if (m_terminaux[k] == m_tabInit[i][0])
-            {
-                tmp += m_tabInit[i][0];
-                ajout = true;
-            }
-            k++;
-        } while (!ajout && k < m_terminaux.size());
-        k = 0;
+       
         do {
             if (m_tabInit[i][k] == "#")
             {
@@ -101,10 +209,23 @@ void Analyseur::premiersSuivants()//Calculs des Premiers Suivants et sauvegarde 
                     m_premiers.push_back(tmp);
                 }
 
-            }*/
+            }
         }
     }
 }
+/*
+do {
+if (m_terminaux[k] == m_tabInit[i][0])
+{
+tmp += m_tabInit[i][0];
+ajout = true;
+}
+k++;
+} while (!ajout && k < m_terminaux.size());
+k = 0;
+*/
+
+
 /*void Analyseur::premiersSuivants(size_t i)//Calculs des Premiers Suivants et sauvegarde de ces derniers dans les tableaux m_Premiers et m_Suivants
 {
     for(size_t j = 1; j < m_tabInit[i].size(); j++)
@@ -132,3 +253,16 @@ int Analyseur::analyse(std::string input)//utilisation des attributs pour savoir
 {
 	return 0;//temporaire
 }
+
+bool Analyseur::isIn(std::vector<std::string> vectStr, std::string str)
+{
+	for (size_t i = 0; i < vectStr.size(); i++)
+	{
+		if (str == vectStr[i])
+		{
+			return true;
+		}
+	}
+	return false;
+}
+

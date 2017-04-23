@@ -2,7 +2,7 @@
 #include "Commun.h"
 #include "SDD.h"
 
-class Analyseur
+class Analyseur : public SDD
 {
 public:
 	Analyseur();

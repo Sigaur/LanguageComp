@@ -72,29 +72,34 @@ void SDD::affichage()
 	}
 }
 
-void SDD::affichageTerminauxEtNon()
+void SDD::trouverTerminauxEtNon()
 {
-	cout << endl << "Affichage Terminaux:" << endl << endl;
-
 	for (size_t i = 0; i < m_tabInit.size(); i++)
 	{
-		cout << m_tabInit[i][0] << endl;
+	    for (size_t j = 1; j < m_tabInit[i].size(); j++)
+	    {
+            for (size_t k = 0; k < m_tabInit[i][j].size(); k++)
+            {
+                for (size_t l = 0; l < m_tabInit[i].size(); l++)
+                {
+                    if (m_tabInit[i][j][k] == m_tabInit[l][0][0])
+                        m_terminaux.push_back(m_tabInit[i][j][k]);
+                    else
+                        m_nonTerminaux.push_back(m_tabInit[i][j][k]);
+                }
+            }
+	    }
 	}
 
+    cout << endl << "Affichage Terminaux:" << endl << endl;
+	for (size_t i = 0; i < m_terminaux.size(); i++)
+	{
+		cout << m_terminaux[i] << endl;
+	}
 	cout << endl << "Affichage Non Terminaux:" << endl << endl;
-
 	for (size_t i = 0; i < m_tabInit.size(); i++)
 	{
-		for (size_t j = 0; j < m_tabInit[i].size(); j++)
-		{
-			if (j == 0)//Etat Initial
-			{
-			}
-			else
-			{
-				cout << m_tabInit[i][j] << endl;
-			}
-		}
+		cout << m_nonTerminaux[i] << endl;
 	}
 }
 
@@ -116,6 +121,7 @@ void SDD::suppresionRecu()
                     vector<string> nouvelleLigne;
                     nouvelleLigne.push_back(nouveauTerminal);
                     m_tabInit.push_back(nouvelleLigne);
+                    m_terminaux.push_back(nouveauTerminal);
                     nouvelleLigne.clear();
                     m_tabInit[m_tabInit.size()-1].push_back("$");
                 }

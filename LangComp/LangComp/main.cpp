@@ -1,4 +1,5 @@
 #include "SDD.h"
+#include <cstdlib>
 
 
 int main()
@@ -6,7 +7,7 @@ int main()
 	SDD mySDD;
 	mySDD.lecture("test.txt");
 	mySDD.affichage();
-	mySDD.affichageTerminauxEtNon();
+	mySDD.trouverTerminauxEtNon();
 	mySDD.suppresionRecu();
 	mySDD.affichage();
 	system("pause");

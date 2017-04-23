@@ -1,7 +1,6 @@
 #include "Analyseur.h"
 
 
-
 Analyseur::Analyseur()
 {
 }
@@ -21,7 +20,12 @@ void Analyseur::initialisation()//Appel des méthodes de m_SDD
 
 void Analyseur::premiersSuivants()//Calculs des Premiers Suivants et sauvegarde de ces derniers dans les tableaux m_Premiers et m_Suivants
 {
-
+    for (size_t i; i < m_tabInit.size(); i++) {
+        std::string term = m_tabInit[i][0];
+        //rules
+        if (m_tabInit[i][0] == term)
+            term = "t0";
+    }
 }
 
 void Analyseur::tableAnalyse()//Calcul de la table d'analyse et sauvegarde de cette dernière dans le m_tableAnalyse

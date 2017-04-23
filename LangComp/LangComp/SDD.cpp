@@ -12,13 +12,24 @@ SDD::~SDD()
 {
 }
 
+bool SDD::isIn2(std::vector<std::string> vectStr, std::string str)
+{
+	for (size_t i = 0; i < vectStr.size(); i++)
+	{
+		if (str == vectStr[i])
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 void SDD::lecture(std::string nomFichier)
 {
 	std::ifstream fichier(nomFichier.c_str());
 
 	if (!fichier)
-		cout << "Fichier Introuvable" << endl;
+		std::cout << "Fichier Introuvable" << endl;
 
 	bool estInitial = true;
 	int nbLigne = 0;
@@ -50,7 +61,7 @@ void SDD::lecture(std::string nomFichier)
 
 void SDD::affichage()
 {
-	cout << "Affichage de la grammaire (contenu SDD):" << endl << endl;
+	std::cout << "Affichage de la grammaire (contenu SDD):" << endl << endl;
 
 	for (size_t i = 0; i < m_tabInit.size(); i++)
 	{
@@ -58,15 +69,15 @@ void SDD::affichage()
 		{
 			if (j == 0)//Etat Initial
 			{
-				cout << m_tabInit[i][j] << "=";
+				std::cout << m_tabInit[i][j] << "=";
 			}
 			else if(j == m_tabInit[i].size() - 1)
 			{
-				cout << m_tabInit[i][j] << endl;
+				std::cout << m_tabInit[i][j] << endl;
 			}
 			else
 			{
-				cout << m_tabInit[i][j] << "|";
+				std::cout << m_tabInit[i][j] << "|";
 			}
 		}
 	}
@@ -82,46 +93,93 @@ void SDD::affichageFirsts()
 		{
 			std::cout << m_premiers[i].premiers[j];
 		}
-		cout << endl;
+		std::cout << endl;
 	}
 	
 }
 
+void SDD::affichageSuivants()
+{
+	std::cout << endl << endl << "Suivants : " << endl;
+	for (size_t i = 0; i < m_suivants.size(); i++)
+	{
+		std::cout << m_suivants[i].initial << "  ";
+		for (size_t j = 0; j < m_suivants[i].premiers.size(); j++)
+		{
+			std::cout << m_suivants[i].premiers[j];
+		}
+		std::cout << endl;
+	}
+
+}
+
 void SDD::trouverTerminauxEtNon()
 {
+	char apostrophe = 39;
+	bool trouve;
+	string tempStr;
+	string tempChar;
+
 	for (size_t i = 0; i < m_tabInit.size(); i++)
 	{
+		if (!isIn2(m_nonTerminaux, m_tabInit[i][0]))
+		{
+			m_nonTerminaux.push_back(m_tabInit[i][0]);
+		}
+
 	    for (size_t j = 1; j < m_tabInit[i].size(); j++)
 	    {
-            for (size_t k = 0; k < m_tabInit[i][j].length(); k++)
+			tempStr = m_tabInit[i][j];
+            for (size_t k = 0; k < m_tabInit[i][j].size(); k++)
             {
-                size_t l = 0;
+				tempChar = tempStr[k];
+				trouve = false;
+				for (size_t neww = 0; neww < m_tabInit.size(); neww++)
+				{
+					
+					
+					if (tempChar == m_tabInit[neww][0])
+					{
+						trouve = true;
+					}
+				}
+
+				if (!trouve)
+				{
+					if (tempChar[0] != apostrophe && !isIn2(m_terminaux, tempChar))
+					{
+						m_terminaux.push_back(tempChar);
+					}
+					
+				}
+				/*
                 bool deter = false;
                 do {
-                    if (m_tabInit[i][j][k] == m_tabInit[l][0][0])
-                    {
-                        m_nonTerminaux.push_back( {0, m_tabInit[i][j][k]} );
+					m_nonTerminaux.push_back(m_tabInit[i][0]);
                         deter = true;
-                    }
                     l++;
                 } while (l < m_tabInit.size() && !deter);
 
-                if (deter) m_nonTerminaux.push_back( {0, m_tabInit[i][j][k]} );
-                else m_terminaux.push_back( {0, m_tabInit[i][j][k]} );
-
+                if (deter) m_nonTerminaux.push_back( m_tabInit[i][0]);
+				else if (m_tabInit[i][j][k] != apostrophe)
+				{
+					m_terminaux.push_back({ 0, m_tabInit[i][j][k] });
+				}
+				*/
             }
+			
 	    }
 	}
 
-    cout << endl << "Affichage Terminaux:" << endl << endl;
+	std::cout << endl << "Affichage Terminaux:" << endl << endl;
 	for (size_t i = 0; i < m_terminaux.size(); i++)
 	{
-		cout << m_terminaux[i] << endl;
+		std::cout << m_terminaux[i] << endl;
 	}
-	cout << endl << "Affichage Non Terminaux:" << endl << endl;
-	for (size_t i = 0; i < m_tabInit.size(); i++)
+	std::cout << endl << "Affichage Non Terminaux:" << endl << endl;
+	for (size_t i = 0; i < m_nonTerminaux.size(); i++)
 	{
-		cout << m_nonTerminaux[i] << endl;
+		std::cout << m_nonTerminaux[i] << endl;
 	}
 }
 
@@ -143,7 +201,7 @@ void SDD::suppresionRecu()
                     vector<string> nouvelleLigne;
                     nouvelleLigne.push_back(nouveauTerminal);
                     m_tabInit.push_back(nouvelleLigne);
-                    m_terminaux.push_back(nouveauTerminal);
+                    //m_terminaux.push_back(nouveauTerminal);
                     nouvelleLigne.clear();
                     m_tabInit[m_tabInit.size()-1].push_back("#");
                 }
@@ -167,6 +225,102 @@ void SDD::suppresionRecu()
         }
     }
 }
+
+
+void SDD::tableAnalyse()
+{
+	vector< string > tempVect;
+	string tempStr;
+	string monTerminal;
+	string monNonTerminal;
+	string w;
+	size_t found;
+	cout << endl;
+	cout << endl;
+
+	int numColonne, numLigne;
+
+
+	cout << "  ";
+
+	for (size_t i = 0; i < m_terminaux.size(); i++)
+	{
+		tempVect.push_back(m_terminaux[i]);
+	}
+	m_tableAnalyse.push_back(tempVect);
+	
+
+	for (size_t i = 0; i < m_nonTerminaux.size(); i++)
+	{
+		tempVect.clear();
+		for (size_t j = 0; j < m_nonTerminaux.size(); j++)
+		{
+			if(j==0)
+				tempVect.push_back(m_nonTerminaux[i]);
+			else
+			{
+				tempStr = "";
+				tempVect.push_back(tempStr);
+			}				
+		}
+		m_tableAnalyse.push_back(tempVect);
+	}
+
+	for (size_t terminal = 0; terminal < m_tableAnalyse[0].size(); terminal++)
+	{
+		monTerminal = m_tableAnalyse[0][terminal];
+		numColonne = terminal;
+		
+		for (size_t i = 0; i < m_premiers.size(); i++)
+		{
+			for (size_t j = 0; j < m_premiers[i].premiers.size(); j++)
+			{
+				
+				if (monTerminal == m_premiers[i].premiers[j])
+				{
+					w = m_premiers[i].initial;
+					//looking for ligne
+					for (size_t ligne = 0; ligne < m_tabInit.size(); ligne++)
+					{
+						for (size_t k = 0; k < m_tabInit[ligne].size(); k++)
+						{
+							found = m_tabInit[ligne][k].find(w);
+							if (found != std::string::npos)
+							{
+								for (size_t z = 0; z < m_tableAnalyse.size(); z++)
+								{
+									if (m_tableAnalyse[z][0] == m_tabInit[ligne][0])
+									{
+										cout << "TRACE : " << w << endl;
+										m_tableAnalyse[z][numColonne] += w;
+									}
+								}
+							}
+							
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	for (size_t i = 0; i < m_tableAnalyse.size(); i++)
+	{
+		for (size_t j = 0; j < m_tableAnalyse[i].size(); j++)
+		{
+			cout << m_tableAnalyse[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
+
+
+
+
+
+
+
 /*
 cd path, ls lister, cd.. dossier parent
 git status

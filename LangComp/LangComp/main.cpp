@@ -13,6 +13,7 @@ int main()
 	mySDD.affichage();
 	mySDD.trouverTerminauxEtNon();
 	mySDD.suppresionRecu();
+	mySDD.trouverTerminauxEtNon();
 	mySDD.affichage();
 	
 	Analyseur myAnalyseur(mySDD);
@@ -25,7 +26,17 @@ int main()
 
 	mySDD.affichageFirsts();
 
-	
+	for (size_t i = 0; i < mySDD.m_tabInit.size(); i++)
+	{
+		test = myAnalyseur.follows(mySDD.m_tabInit[i][0]);
+
+		mySDD.m_suivants.push_back(test);
+	}
+
+	mySDD.affichageSuivants();
+
+	//mySDD.tableAnalyse();
+
 	system("pause");
 	return 0;
 }

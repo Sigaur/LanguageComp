@@ -152,6 +152,124 @@ void Analyseur::firstRule3(Premier & tempPremier)
 	}
 }
 
+Premier Analyseur::follows(std::string start)
+{
+	Premier temp;
+	temp.initial = start;
+
+	followRule1(temp);
+	followRule2(temp);
+	followRule3(temp);
+
+
+	return temp;
+}
+
+void Analyseur::followRule1(Premier & tempPremier)
+{
+	if (this->m_SDD.m_suivants.size() == 0)
+	{
+		tempPremier.premiers.push_back("$");
+	}
+}
+
+void Analyseur::followRule2(Premier & tempPremier)
+{
+	std::size_t found;
+	string tempStr;
+	Premier tempRecursive;
+
+	bool isEpsilon = false;
+
+	for (size_t i = 0; i < this->m_SDD.m_tabInit.size(); i++)
+	{
+		for (size_t j = 1; j < this->m_SDD.m_tabInit[i].size(); j++)
+		{
+			tempStr = this->m_SDD.m_tabInit[i][j];
+			found = tempStr.find(tempPremier.initial);
+			if (found != std::string::npos)
+			{
+				if (tempStr.substr(found + tempPremier.initial.size(), 1) != "'")
+				{					
+					if (found + tempPremier.initial.size() < this->m_SDD.m_tabInit[i][j].size() && found > 0)
+					{
+						tempStr = this->m_SDD.m_tabInit[i][j].substr(found + tempPremier.initial.size());
+						tempRecursive = firsts(tempStr);
+						//cout << "debug" << tempPremier.initial << " : " << this->m_SDD.m_tabInit[i][j] << endl;
+						
+						for (size_t s = 1; s < tempRecursive.premiers.size(); s++)
+						{
+							if (tempRecursive.premiers[s] != EPSILON)
+							{
+								tempPremier.premiers.push_back(tempRecursive.premiers[s]);
+								isEpsilon = true;
+							}
+						}
+						if (isEpsilon)//Application de la regle 4
+						{
+							tempStr = this->m_SDD.m_tabInit[i][0];
+							if (tempPremier.initial != tempStr)
+							{
+								tempRecursive = follows(tempStr);
+							}							
+						}
+
+						for (size_t s = 1; s < tempRecursive.premiers.size(); s++)
+						{
+							if (tempRecursive.premiers[s] != EPSILON)
+							{
+								tempPremier.premiers.push_back(tempRecursive.premiers[s]);
+								isEpsilon = true;
+							}
+						}
+					}
+				}
+				
+			}
+		}
+	}
+}
+
+void Analyseur::followRule3(Premier & tempPremier)
+{
+	std::size_t found;
+	string tempStr;
+	Premier tempRecursive;
+
+	for (size_t i = 0; i < this->m_SDD.m_tabInit.size(); i++)
+	{
+		for (size_t j = 1; j < this->m_SDD.m_tabInit[i].size(); j++)
+		{
+			tempStr = this->m_SDD.m_tabInit[i][j];
+			found = tempStr.find(tempPremier.initial);
+			if (found != std::string::npos)
+			{
+				if (tempStr.substr(found + tempPremier.initial.size(), 1) != "'")
+				{
+					if (found + tempPremier.initial.size() == this->m_SDD.m_tabInit[i][j].size() && found > 0)
+					{
+						tempStr = this->m_SDD.m_tabInit[i][0];
+						
+						if (tempStr != tempPremier.initial)
+						{
+							tempRecursive = follows(tempStr);
+							//cout << "debug" << tempPremier.initial << " : " << this->m_SDD.m_tabInit[i][j] << endl;
+															
+							for (size_t s = 1; s < tempRecursive.premiers.size(); s++)
+							{							
+									tempPremier.premiers.push_back(tempRecursive.premiers[s]);
+							}
+						}
+						
+					}
+				}
+
+			}
+		}
+	}
+}
+
+
 
 /*
 void Analyseur::premiersSuivants()//Calculs des Premiers Suivants et sauvegarde de ces derniers dans les tableaux m_Premiers et m_Suivants

@@ -23,6 +23,11 @@ public:
 	void firstRule2(Premier & tempPremier);
 	void firstRule3(Premier & tempPremier);
 
+	Premier follows(std::string start);//Fonction recursive prenant en entrée les états initiaux
+	void followRule1(Premier & tempPremier);
+	void followRule2(Premier & tempPremier);
+	void followRule3(Premier & tempPremier);
+
 	
 
 private:

@@ -1,3 +1,4 @@
 ﻿  SDD.cpp
+c:\users\marcgayraud\work\languagecomp2\langcomp\langcomp\sdd.cpp(241): warning C4101: 'numLigne': unreferenced local variable
   LangComp.vcxproj -> C:\Users\MarcGAYRAUD\Work\LanguageComp2\LangComp\Debug\LangComp.exe
   LangComp.vcxproj -> C:\Users\MarcGAYRAUD\Work\LanguageComp2\LangComp\Debug\LangComp.pdb (Partial PDB)

@@ -8,3 +8,4 @@ struct Premier {
 	std::string initial;
 	std::vector <std::string> premiers;
 };
+

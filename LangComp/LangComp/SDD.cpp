@@ -78,15 +78,22 @@ void SDD::trouverTerminauxEtNon()
 	{
 	    for (size_t j = 1; j < m_tabInit[i].size(); j++)
 	    {
-            for (size_t k = 0; k < m_tabInit[i][j].size(); k++)
+            for (size_t k = 0; k < m_tabInit[i][j].length(); k++)
             {
-                for (size_t l = 0; l < m_tabInit[i].size(); l++)
-                {
+                size_t l = 0;
+                bool deter = false;
+                do {
                     if (m_tabInit[i][j][k] == m_tabInit[l][0][0])
-                        m_nonTerminaux.push_back( {1, m_tabInit[i][j][k]} );
-                    else
-                        m_terminaux.push_back( {1, m_tabInit[i][j][k]} );
-                }
+                    {
+                        m_nonTerminaux.push_back( {0, m_tabInit[i][j][k]} );
+                        deter = true;
+                    }
+                    l++;
+                } while (l < m_tabInit.size() && !deter);
+
+                if (deter) m_nonTerminaux.push_back( {0, m_tabInit[i][j][k]} );
+                else m_terminaux.push_back( {0, m_tabInit[i][j][k]} );
+
             }
 	    }
 	}
@@ -123,7 +130,7 @@ void SDD::suppresionRecu()
                     m_tabInit.push_back(nouvelleLigne);
                     m_terminaux.push_back(nouveauTerminal);
                     nouvelleLigne.clear();
-                    m_tabInit[m_tabInit.size()-1].push_back("$");
+                    m_tabInit[m_tabInit.size()-1].push_back("#");
                 }
                 /// CREE REGLE ET SUPPRIME ANCIENNE
                 string temp;

@@ -83,9 +83,9 @@ void SDD::trouverTerminauxEtNon()
                 for (size_t l = 0; l < m_tabInit[i].size(); l++)
                 {
                     if (m_tabInit[i][j][k] == m_tabInit[l][0][0])
-                        m_terminaux.push_back(m_tabInit[i][j][k]);
+                        m_nonTerminaux.push_back( {1, m_tabInit[i][j][k]} );
                     else
-                        m_nonTerminaux.push_back(m_tabInit[i][j][k]);
+                        m_terminaux.push_back( {1, m_tabInit[i][j][k]} );
                 }
             }
 	    }

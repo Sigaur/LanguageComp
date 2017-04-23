@@ -21,10 +21,11 @@ void Analyseur::initialisation()//Appel des méthodes de m_SDD
 void Analyseur::premiersSuivants()//Calculs des Premiers Suivants et sauvegarde de ces derniers dans les tableaux m_Premiers et m_Suivants
 {
     for (size_t i; i < m_tabInit.size(); i++) {
-        std::string term = m_tabInit[i][0];
-        //rules
-        if (m_tabInit[i][0] == term)
-            term = "t0";
+        for(size_t j = 0; j < m_terminaux.size(); j++)
+        {
+            /*if (m_tabInit[i][0] == m_terminaux[k])
+                term = "t0";*/
+        }
     }
 }
 

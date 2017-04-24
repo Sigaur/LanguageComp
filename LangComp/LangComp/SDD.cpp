@@ -234,11 +234,9 @@ void SDD::tableAnalyse()
 	string monTerminal;
 	string monNonTerminal;
 	string w;
-	size_t found;
 	cout << endl;
 	cout << endl;
 
-	int numColonne, numLigne;
 
 
 	cout << "  ";
@@ -265,7 +263,7 @@ void SDD::tableAnalyse()
 		}
 		m_tableAnalyse.push_back(tempVect);
 	}
-
+	/*
 	for (size_t terminal = 0; terminal < m_tableAnalyse[0].size(); terminal++)
 	{
 		monTerminal = m_tableAnalyse[0][terminal];
@@ -303,13 +301,143 @@ void SDD::tableAnalyse()
 			}
 		}
 	}
+	*/
+	string alpha;
+	Premier premierAlpha;
+	Premier suivantAlpha;
+	string a;
+	string b;
+	string c;
+	string premierDeAlpha;
+	string alphaForSuivants;
+	char apostrophe = 39;
+	bool continuer, continuer2;
+	size_t numA, numB;
+
+	for (size_t regle = 0; regle < m_tabInit.size(); regle ++)
+	{
+		for (size_t regleNum = 1; regleNum < m_tabInit[regle].size(); regleNum++)
+		{
+			alpha = m_tabInit[regle][regleNum];
+			continuer = true;
+			numA = 0;
+			while (continuer && numA < alpha.size())
+			{
+				b = alpha[numA];
+				if (alpha[numA + 1] == apostrophe)
+				{
+					b += apostrophe;
+				}
+
+				if (isIn2(m_terminaux, b))
+				{
+					premierDeAlpha = b;
+					continuer = false;
+				}
+				else
+				{
+					for (size_t z = 0; z < m_premiers.size(); z++)
+					{
+						if (m_premiers[z].initial == b)
+						{
+							for (size_t z2 = 1; z2 < m_premiers[z].premiers.size(); z2++)
+							{
+								premierDeAlpha += m_premiers[z].premiers[z2];
+								continuer = false;
+							}
+						}
+					}
+				}
+				numA++;
+			}
+			for (size_t premie = 0; premie < premierDeAlpha.size(); premie++)
+			{
+				a = premierDeAlpha[premie];
+				if (premie + 1 < premierDeAlpha.size())
+				{
+					if (premierDeAlpha[premie + 1] == apostrophe)
+					{
+						a += apostrophe;
+					}
+				}
+			}
 
 
+			if (b == EPSILON)
+			{
+				continuer2 = true;
+				numB = 0;
+				while (continuer2 && numB < alpha.size())
+				{
+					c = alpha[numB];
+					if (alpha[numB + 1] == apostrophe)
+					{
+						c += apostrophe;
+					}
+
+					if (isIn2(m_nonTerminaux, c))
+					{
+						alphaForSuivants = c;
+						continuer2 = false;
+					}
+					numB++;
+				}
+				for (size_t suivan = 0; suivan < m_suivants.size(); suivan++)
+				{
+					if (alphaForSuivants == m_suivants[suivan].initial)
+					{
+						suivantAlpha = m_suivants[suivan];
+					}
+				}
+
+				for (size_t suivan = 0; suivan < suivantAlpha.premiers.size(); suivan++)
+				{
+					for (size_t Ligne = 0; Ligne < m_tableAnalyse.size(); Ligne++)
+					{
+						if (m_tableAnalyse[Ligne][0] == m_tabInit[regle][0])
+						{
+							for (size_t Colonne = 0; Colonne < m_tableAnalyse[Ligne].size(); Colonne++)
+							{
+								if (m_tableAnalyse[0][Colonne] == suivantAlpha.premiers[suivan])
+								{
+									//cout<<"Debug" << m_tabInit[regle][0] << "->" << alpha<<endl;
+									m_tableAnalyse[Ligne][Colonne] = m_tabInit[regle][0] + "->" + alpha;
+								}
+							}
+						}
+					}
+				}
+
+			}
+
+
+
+			for (size_t Ligne = 0; Ligne < m_tableAnalyse.size(); Ligne++)
+			{
+				if (m_tableAnalyse[Ligne][0] == m_tabInit[regle][0])
+				{
+					for (size_t Colonne = 0; Colonne < m_tableAnalyse[Ligne].size(); Colonne++)
+					{
+						if (m_tableAnalyse[0][Colonne] == a)
+						{
+							//cout<<"Debug" << m_tabInit[regle][0] << "->" << alpha<<endl;
+							m_tableAnalyse[Ligne][Colonne] = m_tabInit[regle][0] + "->" + alpha;
+						}
+					}
+				}
+			}
+
+		}
+	}
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << "   ";
 	for (size_t i = 0; i < m_tableAnalyse.size(); i++)
 	{
 		for (size_t j = 0; j < m_tableAnalyse[i].size(); j++)
 		{
-			cout << m_tableAnalyse[i][j] << " ";
+			cout << m_tableAnalyse[i][j] << "                 ";
 		}
 		cout << endl;
 	}

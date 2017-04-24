@@ -196,7 +196,10 @@ void Analyseur::followRule2(Premier & tempPremier)
 						tempStr = this->m_SDD.m_tabInit[i][j].substr(found + tempPremier.initial.size());
 						tempRecursive = firsts(tempStr);
 						//cout << "debug" << tempPremier.initial << " : " << this->m_SDD.m_tabInit[i][j] << endl;
-						
+						if (tempRecursive.premiers.size() == 1)
+						{
+								tempPremier.premiers.push_back(tempRecursive.premiers[0]);
+						}
 						for (size_t s = 1; s < tempRecursive.premiers.size(); s++)
 						{
 							if (tempRecursive.premiers[s] != EPSILON)

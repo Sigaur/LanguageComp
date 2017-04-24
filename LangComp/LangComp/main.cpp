@@ -35,7 +35,7 @@ int main()
 
 	mySDD.affichageSuivants();
 
-	//mySDD.tableAnalyse();
+	mySDD.tableAnalyse();
 
 	system("pause");
 	return 0;

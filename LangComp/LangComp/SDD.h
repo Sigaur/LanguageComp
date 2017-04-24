@@ -1,5 +1,6 @@
 #pragma once
 #include "Commun.h"
+#define EPSILON "#"
 
 class SDD
 {
